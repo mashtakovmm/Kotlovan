@@ -24,13 +24,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "MousePosition",
-                    "type": "PassThrough",
-                    "id": "7987fed5-97b6-4d5a-b477-10bbf0369ded",
-                    "expectedControlType": "Vector2",
+                    "name": "Sprint",
+                    "type": "Button",
+                    "id": "8996759d-a7aa-4d80-96ce-380f06f7448c",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -102,12 +102,12 @@
                 },
                 {
                     "name": "",
-                    "id": "0c99b11b-865d-4ca7-90a3-7ad54b40e235",
-                    "path": "<Mouse>/position",
+                    "id": "b29f7e88-1907-4579-9b18-9924517f4095",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "MousePosition",
+                    "action": "Sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

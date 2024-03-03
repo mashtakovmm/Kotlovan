@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,16 +12,16 @@ public class PlayerController : MonoBehaviour
     // TODO: jumping and rotating with mouse
 
     // Controls values
-    [SerializeField] private float playerSpeed = 2.0f;
+    [SerializeField] private float normalSpeed = 2.0f;
+    [SerializeField] private float sprintSpeed = 3.0f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityForce = -9.81f;
-    [SerializeField] private float sensitivity = 0.5f;
-    [SerializeField] private float yRotationLimit = 80f;
-
-    private Vector3 direction;
+    private Vector3 move;
     private Vector2 movementInput;
-    private Vector2 mousePosition;
-    private Vector2 mouseTurn = Vector2.zero;
+
+    private float speed;
+
+    private bool isSprinting;
     private bool isGrounded;
 
     private void Awake()
@@ -34,67 +30,53 @@ public class PlayerController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
     }
 
-    private void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-    }
-
     private void Update()
     {
         isGrounded = characterController.isGrounded;
         movementInput = movement.ReadValue<Vector2>();
-        direction = new Vector3(movementInput.x, gravityForce, movementInput.y);
-        mousePosition = playerInputActions.Player.MousePosition.ReadValue<Vector2>();
-
+        move = transform.right * movementInput.x + transform.forward * movementInput.y;
 
         // TODO: CLEAN UP METHODS LATER PLEASE
-        // Movement
-        characterController.Move(direction * Time.deltaTime * playerSpeed);
-
-        // Turnds object to movement vector direction
-        // if (direction != Vector3.zero)
-        // {
-        //     gameObject.transform.forward = direction;
-        // }
 
         // Gravity stuff
-        if (isGrounded && direction.y < 0)
+        if (isGrounded && move.y < 0)
         {
-            direction.y = 0f;
+            move.y = 0f;
         }
 
-        // Cam rotation
-        mouseTurn.x += Input.GetAxis("Mouse X") * sensitivity;
-        mouseTurn.y += Input.GetAxis("Mouse Y") * sensitivity;
-        mouseTurn.y = Mathf.Clamp(mouseTurn.y, -yRotationLimit, yRotationLimit);
+        // Movement
+        if(isSprinting) {
+            speed = sprintSpeed; 
+        } else {
+            speed = normalSpeed;
+        }
 
-        var xQuat = Quaternion.AngleAxis(mouseTurn.x, Vector3.up);
-        var yQuat = Quaternion.AngleAxis(mouseTurn.y, Vector3.left);
-        transform.localRotation = xQuat * yQuat;
+        characterController.Move(move * Time.deltaTime * speed);
 
         // Debug. Delete later
-        Debug.Log($"Movement vector: {movement.ReadValue<Vector2>()}");
         Debug.Log($"Is grounded: {isGrounded}");
-        Debug.Log($"Mouse position: {mousePosition}");
     }
 
     private void OnEnable()
     {
         movement = playerInputActions.Player.Move;
-        movement.Enable();
 
         playerInputActions.Player.Jump.performed += OnJump;
-        playerInputActions.Player.Jump.Enable();
+        playerInputActions.Player.Sprint.performed += OnSprint;
+        playerInputActions.Player.Sprint.canceled += OnSprintStop;
 
-        playerInputActions.Player.MousePosition.Enable();
+        playerInputActions.Player.Enable();
+
     }
 
     private void OnDisable()
     {
-        movement.Disable();
         playerInputActions.Player.Jump.performed -= OnJump;
-        playerInputActions.Player.Jump.Disable();
-        playerInputActions.Player.MousePosition.Disable();
+        playerInputActions.Player.Sprint.performed -= OnSprint;
+        playerInputActions.Player.Sprint.canceled -= OnSprintStop;
+
+
+        playerInputActions.Player.Disable();
     }
 
     private void OnJump(InputAction.CallbackContext context)
@@ -102,6 +84,21 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Jump");
         return;
     }
+
+    private void OnSprint(InputAction.CallbackContext context)
+    {
+        isSprinting = true;
+        Debug.Log("Starting Sprint");
+        return;
+    }
+
+    private void OnSprintStop(InputAction.CallbackContext context)
+    {
+        isSprinting = false;
+        Debug.Log("Stopping Sprint");
+        return;
+    }
+
 
 
 }
