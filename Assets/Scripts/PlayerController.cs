@@ -18,11 +18,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float gravityForce = -9.81f;
     private Vector3 move;
     private Vector2 movementInput;
+    private Vector3 verticalVelocity;
 
     private float speed;
 
     private bool isSprinting;
-    private bool isGrounded;
 
     private void Awake()
     {
@@ -32,29 +32,34 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        isGrounded = characterController.isGrounded;
         movementInput = movement.ReadValue<Vector2>();
         move = transform.right * movementInput.x + transform.forward * movementInput.y;
 
-        // TODO: CLEAN UP METHODS LATER PLEASE
-
         // Gravity stuff
-        if (isGrounded && move.y < 0)
+        verticalVelocity.y += gravityForce * Time.deltaTime;
+
+        if (characterController.isGrounded && verticalVelocity.y < 0)
         {
-            move.y = 0f;
+            verticalVelocity.y = -1f;
         }
 
+        // TODO: CLEAN UP METHODS LATER PLEASE
+
         // Movement
-        if(isSprinting) {
-            speed = sprintSpeed; 
-        } else {
+        if (isSprinting)
+        {
+            speed = sprintSpeed;
+        }
+        else
+        {
             speed = normalSpeed;
         }
 
         characterController.Move(move * Time.deltaTime * speed);
+        characterController.Move(verticalVelocity * Time.deltaTime);
 
         // Debug. Delete later
-        Debug.Log($"Is grounded: {isGrounded}");
+        Debug.Log($"Is grounded: {characterController.isGrounded}");
     }
 
     private void OnEnable()
@@ -75,12 +80,15 @@ public class PlayerController : MonoBehaviour
         playerInputActions.Player.Sprint.performed -= OnSprint;
         playerInputActions.Player.Sprint.canceled -= OnSprintStop;
 
-
         playerInputActions.Player.Disable();
     }
 
     private void OnJump(InputAction.CallbackContext context)
     {
+        if (characterController.isGrounded)
+        {
+            verticalVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravityForce);
+        }
         Debug.Log("Jump");
         return;
     }
@@ -98,8 +106,5 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Stopping Sprint");
         return;
     }
-
-
-
 }
 
