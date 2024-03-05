@@ -8,29 +8,53 @@ public class PlayerController : MonoBehaviour
     private PlayerInputActions playerInputActions;
     private InputAction movement;
     private CharacterController characterController;
+    private Camera playerCam;
 
-    // TODO: jumping and rotating with mouse
-
-    // Controls values
+    [Header("Controls values")]
     [SerializeField] private float normalSpeed = 2.0f;
-    [SerializeField] private float sprintSpeed = 3.0f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityForce = -9.81f;
+
+    [Header("Camera rotation values")]
+    [SerializeField] private float sensitivity = 10f;
+    [SerializeField] private float yRotationLimit = 90f;
+    private Vector2 mouseDelta;
+    private Vector2 mouseTurn = Vector2.zero;
+
     private Vector3 move;
     private Vector2 movementInput;
     private Vector3 verticalVelocity;
 
     private float speed;
-
     private bool isSprinting;
 
     private void Awake()
     {
         playerInputActions = new PlayerInputActions();
         characterController = GetComponent<CharacterController>();
+        playerCam = GetComponentInChildren<Camera>();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
+    {
+        HandleMouse();
+        HandleMovement();
+    }
+
+    private void HandleMouse()
+    {
+        mouseDelta = Mouse.current.delta.ReadValue();
+
+        mouseTurn.x += mouseDelta.x * sensitivity * Time.deltaTime;
+        mouseTurn.y -= mouseDelta.y * sensitivity * Time.deltaTime;
+        mouseTurn.y = Mathf.Clamp(mouseTurn.y, -yRotationLimit, yRotationLimit);
+
+        playerCam.transform.localRotation = Quaternion.Euler(mouseTurn.y, 0f, 0f);
+        transform.rotation = Quaternion.AngleAxis(mouseTurn.x, Vector3.up);
+    }
+
+    private void HandleMovement()
     {
         movementInput = movement.ReadValue<Vector2>();
         move = transform.right * movementInput.x + transform.forward * movementInput.y;
@@ -43,12 +67,9 @@ public class PlayerController : MonoBehaviour
             verticalVelocity.y = -1f;
         }
 
-        // TODO: CLEAN UP METHODS LATER PLEASE
-
-        // Movement
         if (isSprinting)
         {
-            speed = sprintSpeed;
+            speed = normalSpeed * 1.5f;
         }
         else
         {
@@ -57,9 +78,6 @@ public class PlayerController : MonoBehaviour
 
         characterController.Move(move * Time.deltaTime * speed);
         characterController.Move(verticalVelocity * Time.deltaTime);
-
-        // Debug. Delete later
-        Debug.Log($"Is grounded: {characterController.isGrounded}");
     }
 
     private void OnEnable()
@@ -69,9 +87,9 @@ public class PlayerController : MonoBehaviour
         playerInputActions.Player.Jump.performed += OnJump;
         playerInputActions.Player.Sprint.performed += OnSprint;
         playerInputActions.Player.Sprint.canceled += OnSprintStop;
+        playerInputActions.Player.Pause.performed += OnPause;
 
         playerInputActions.Player.Enable();
-
     }
 
     private void OnDisable()
@@ -79,6 +97,7 @@ public class PlayerController : MonoBehaviour
         playerInputActions.Player.Jump.performed -= OnJump;
         playerInputActions.Player.Sprint.performed -= OnSprint;
         playerInputActions.Player.Sprint.canceled -= OnSprintStop;
+        playerInputActions.Player.Pause.performed -= OnPause;
 
         playerInputActions.Player.Disable();
     }
@@ -90,21 +109,23 @@ public class PlayerController : MonoBehaviour
             verticalVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravityForce);
         }
         Debug.Log("Jump");
-        return;
     }
 
     private void OnSprint(InputAction.CallbackContext context)
     {
         isSprinting = true;
         Debug.Log("Starting Sprint");
-        return;
     }
 
     private void OnSprintStop(InputAction.CallbackContext context)
     {
         isSprinting = false;
         Debug.Log("Stopping Sprint");
-        return;
+    }
+
+    private void OnPause(InputAction.CallbackContext context)
+    {
+        Debug.Log("Translating escape press");
     }
 }
 
