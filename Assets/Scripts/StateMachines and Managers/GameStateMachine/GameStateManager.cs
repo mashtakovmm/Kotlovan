@@ -2,14 +2,16 @@ using UnityEngine;
 
 public class GameStateManager : MonoBehaviour
 {
-    // Channels
+    [Header("Listening to:")]
     [SerializeField] VoidEventChannelSO pauseChannel;
+    [Header("Broadcasting to:")]
+    [SerializeField] BoolEventChannelSO togglePauseMenuChanel;
     // States
     private GameBaseState currentState;
     public GamePausedState PausedState = new GamePausedState();
     public GamePlayedState PlayedState = new GamePlayedState();
     // Var
-    private bool isPaused = false;
+    private bool isPaused;
 
     private void Start()
     {
@@ -19,14 +21,16 @@ public class GameStateManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(currentState);
+
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         pauseChannel.OnVoidEventRequested += HandlePause;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         pauseChannel.OnVoidEventRequested -= HandlePause;
     }
 
@@ -38,8 +42,7 @@ public class GameStateManager : MonoBehaviour
 
     private void HandlePause()
     {
-        isPaused = !isPaused;
-        
+        Debug.Log("PAUSED\\UNPAUSED");
         if (isPaused)
         {
             SwitchState(PlayedState);
@@ -48,5 +51,7 @@ public class GameStateManager : MonoBehaviour
         {
             SwitchState(PausedState);
         }
+        isPaused = !isPaused;
+        togglePauseMenuChanel.OnBoolEventRequested(isPaused);
     }
 }

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5077195913675107518}
   - component: {fileID: 4747965102106582390}
   - component: {fileID: 3245112417932583695}
-  - component: {fileID: 2294840257673772974}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: MainCamera
@@ -93,20 +92,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2782594835056404367}
   m_Enabled: 1
---- !u!114 &2294840257673772974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2782594835056404367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68b28c9a85afcf24881f829baaee5c85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sensitivity: 100
-  yRotationLimit: 75
 --- !u!1 &8600622348956858227
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,7 +271,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5a04cbdd1aa7a44b6574da84c51053, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseChannel: {fileID: 11400000, guid: 1ed7a0404eb9de4428f27cb50ea685b7, type: 2}
   normalSpeed: 2
-  sprintSpeed: 4
   jumpHeight: 2
   gravityForce: -9.81
+  sensitivity: 10
+  yRotationLimit: 90

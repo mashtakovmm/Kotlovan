@@ -10,15 +10,15 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private Camera playerCam;
 
-    [Header("Channels")]
+    [Header("Broadcast to:")]
     [SerializeField] private VoidEventChannelSO pauseChannel;
 
-    [Header("Controls values")]
+    [Header("Controls")]
     [SerializeField] private float normalSpeed = 2.0f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityForce = -9.81f;
 
-    [Header("Camera rotation values")]
+    [Header("Camera rotation")]
     [SerializeField] private float sensitivity = 10f;
     [SerializeField] private float yRotationLimit = 90f;
     private Vector2 mouseDelta;
@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
         playerInputActions.Player.Pause.performed += OnPauseButtonPress;
 
         #if UNITY_EDITOR
-                playerInputActions.Player.Pause.ApplyBindingOverride("<Keyboard>/tab", path: "<Keyboard>/escape");
+            playerInputActions.Player.Pause.ApplyBindingOverride("<Keyboard>/tab", path: "<Keyboard>/escape");
         #endif
 
         playerInputActions.Player.Enable();
