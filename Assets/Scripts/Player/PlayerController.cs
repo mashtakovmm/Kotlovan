@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private Camera playerCam;
 
+    [Header("Channels")]
+    [SerializeField] private VoidEventChannelSO pauseChannel;
+
     [Header("Controls values")]
     [SerializeField] private float normalSpeed = 2.0f;
     [SerializeField] private float jumpHeight = 1.0f;
@@ -27,6 +30,7 @@ public class PlayerController : MonoBehaviour
 
     private float speed;
     private bool isSprinting;
+    private bool isInDialogue = false;
 
     private void Awake()
     {
@@ -38,8 +42,15 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        HandleMouse();
-        HandleMovement();
+        if (!isInDialogue)
+        {
+            HandleMouse();
+            HandleMovement();
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 
     private void HandleMouse()
@@ -87,7 +98,11 @@ public class PlayerController : MonoBehaviour
         playerInputActions.Player.Jump.performed += OnJump;
         playerInputActions.Player.Sprint.performed += OnSprint;
         playerInputActions.Player.Sprint.canceled += OnSprintStop;
-        playerInputActions.Player.Pause.performed += OnPause;
+        playerInputActions.Player.Pause.performed += OnPauseButtonPress;
+
+        #if UNITY_EDITOR
+                playerInputActions.Player.Pause.ApplyBindingOverride("<Keyboard>/tab", path: "<Keyboard>/escape");
+        #endif
 
         playerInputActions.Player.Enable();
     }
@@ -97,7 +112,7 @@ public class PlayerController : MonoBehaviour
         playerInputActions.Player.Jump.performed -= OnJump;
         playerInputActions.Player.Sprint.performed -= OnSprint;
         playerInputActions.Player.Sprint.canceled -= OnSprintStop;
-        playerInputActions.Player.Pause.performed -= OnPause;
+        playerInputActions.Player.Pause.performed -= OnPauseButtonPress;
 
         playerInputActions.Player.Disable();
     }
@@ -123,8 +138,9 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Stopping Sprint");
     }
 
-    private void OnPause(InputAction.CallbackContext context)
+    private void OnPauseButtonPress(InputAction.CallbackContext context)
     {
+        pauseChannel.RaiseEvent();
         Debug.Log("Translating escape press");
     }
 }
