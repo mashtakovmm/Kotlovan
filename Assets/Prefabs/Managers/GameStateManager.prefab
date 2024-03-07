@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseChannel: {fileID: 11400000, guid: 1ed7a0404eb9de4428f27cb50ea685b7, type: 2}
+  togglePauseMenuChannel: {fileID: 11400000, guid: 465b21533eade5943b5a37832801179f, type: 2}

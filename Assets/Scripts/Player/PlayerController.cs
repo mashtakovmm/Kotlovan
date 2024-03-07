@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private Camera playerCam;
 
-    [Header("Broadcast to:")]
+    [Header("Broadcasting to:")]
     [SerializeField] private VoidEventChannelSO pauseChannel;
 
     [Header("Controls")]
@@ -141,7 +141,6 @@ public class PlayerController : MonoBehaviour
     private void OnPauseButtonPress(InputAction.CallbackContext context)
     {
         pauseChannel.RaiseEvent();
-        Debug.Log("Translating escape press");
     }
 }
 

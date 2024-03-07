@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Components")]
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject interactButtonTip;
 
     private void OnEnable()
     {

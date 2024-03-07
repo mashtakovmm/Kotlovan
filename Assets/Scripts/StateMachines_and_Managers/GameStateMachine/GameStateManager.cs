@@ -5,7 +5,7 @@ public class GameStateManager : MonoBehaviour
     [Header("Listening to:")]
     [SerializeField] VoidEventChannelSO pauseChannel;
     [Header("Broadcasting to:")]
-    [SerializeField] BoolEventChannelSO togglePauseMenuChanel;
+    [SerializeField] BoolEventChannelSO togglePauseMenuChannel;
     // States
     private GameBaseState currentState;
     public GamePausedState PausedState = new GamePausedState();
@@ -42,16 +42,18 @@ public class GameStateManager : MonoBehaviour
 
     private void HandlePause()
     {
-        Debug.Log("PAUSED\\UNPAUSED");
         if (isPaused)
         {
             SwitchState(PlayedState);
+            Cursor.lockState = CursorLockMode.Locked;
+
         }
         if (!isPaused)
         {
             SwitchState(PausedState);
+            Cursor.lockState = CursorLockMode.None;
         }
         isPaused = !isPaused;
-        togglePauseMenuChanel.OnBoolEventRequested(isPaused);
+        togglePauseMenuChannel.OnBoolEventRequested(isPaused);
     }
 }
