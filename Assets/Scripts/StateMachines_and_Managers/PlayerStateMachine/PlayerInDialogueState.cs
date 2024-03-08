@@ -1,18 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
-public class PlayerInDialogueState : MonoBehaviour
+public class PlayerInDialogueState : PlayerBaseState
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void EnterState(PlayerStateManager player)
     {
-        
+        Cursor.lockState = CursorLockMode.None;
+        Debug.Log("Enter dialogue state");
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void UpdateState(PlayerStateManager player)
     {
-        
+
+    }
+
+    public override void ExitState(PlayerStateManager player)
+    {
+
     }
 }

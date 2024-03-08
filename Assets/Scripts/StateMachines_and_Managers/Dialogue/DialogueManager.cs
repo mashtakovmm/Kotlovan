@@ -4,7 +4,16 @@ using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
-    private void StartDialogue() {
-        Debug.Log("StartedDialogue");
+    [Header("Listening to:")]
+    [SerializeField] private DialogueSOEventChannelSO dialogueStartChannel;
+
+    private void OnEnable()
+    {
+        dialogueStartChannel.OnDialogueSOEventRequested += StartDialogue;
+    }
+
+    private void StartDialogue(DialogueSO dialogue)
+    {
+        // Debug.Log($"{dialogue.StartNode.Line.Text}");
     }
 }

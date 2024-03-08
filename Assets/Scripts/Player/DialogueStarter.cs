@@ -6,13 +6,14 @@ public class DialogueStarter : MonoBehaviour
     private PlayerInputActions playerInputActions;
     private Camera playerCamera;
     [SerializeField] private float raycastDistance = 3f;
+    private GameObject hitObject;
     private GameObject prevHitObject = null;
     private Color defaultColor;
+
     private void Awake()
     {
         playerInputActions = new PlayerInputActions();
         playerCamera = GetComponentInChildren<Camera>();
-        Debug.Log(playerInputActions);
     }
 
     private void Update()
@@ -22,13 +23,12 @@ public class DialogueStarter : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, raycastDistance))
         {
-            GameObject hitObject = hit.collider.gameObject;
-            Debug.Log(hitObject == prevHitObject);
+            hitObject = hit.collider.gameObject;
             if (prevHitObject != hitObject)
             {
                 if (prevHitObject != null)
                 {
-                    prevHitObject.GetComponent<Renderer>().material.SetColor("_Color", defaultColor); // Color.cyan
+                    prevHitObject.GetComponent<Renderer>().material.SetColor("_Color", defaultColor); 
                 }
                 defaultColor = hitObject.GetComponent<Renderer>().material.GetColor("_Color");
                 prevHitObject = hitObject;
@@ -39,10 +39,10 @@ public class DialogueStarter : MonoBehaviour
             }
         }
         else if (prevHitObject)
-            {
-                prevHitObject.GetComponent<Renderer>().material.SetColor("_Color", defaultColor); // Color.cyan
-                prevHitObject = null;
-            }
+        {
+            prevHitObject.GetComponent<Renderer>().material.SetColor("_Color", defaultColor); 
+            prevHitObject = null;
+        }
     }
 
     private void OnEnable()
@@ -59,7 +59,10 @@ public class DialogueStarter : MonoBehaviour
 
     private void HandleInteract(InputAction.CallbackContext context)
     {
-
+        if (hitObject && hitObject.GetComponent<DialogueHaver>())
+        {
+            hitObject.GetComponent<DialogueHaver>().HandleDialogueRequest();
+        }
     }
 
 }

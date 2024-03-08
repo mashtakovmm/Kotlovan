@@ -11,7 +11,7 @@ public class DialogueHaver : MonoBehaviour
     [SerializeField] private DialogueSO _dialogue;
 
     public void HandleDialogueRequest() {
-        Debug.Log("Starting Dialogue");
+        Debug.Log("Starting Dialogue from NPC");
         dialogueStartChannel.OnDialogueSOEventRequested(_dialogue);
     }
 }
