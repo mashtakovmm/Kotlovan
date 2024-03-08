@@ -5,7 +5,6 @@ public class PlayerInDialogueState : PlayerBaseState
 {
     public override void EnterState(PlayerStateManager player)
     {
-        Cursor.lockState = CursorLockMode.None;
         Debug.Log("Enter dialogue state");
     }
 

@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     private Camera playerCam;
 
     [Header("Broadcasting to:")]
-    [SerializeField] private VoidEventChannelSO pauseChannel;
+    [SerializeField] private BoolEventChannelSO pauseChannel;
 
     [Header("Controls")]
     [SerializeField] private float normalSpeed = 2.0f;
@@ -30,7 +30,8 @@ public class PlayerController : MonoBehaviour
 
     private float speed;
     private bool isSprinting;
-    private bool isInDialogue = false;
+
+    private bool isPaused = false;
 
     private void Awake()
     {
@@ -42,15 +43,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!isInDialogue)
-        {
-            HandleMouse();
-            HandleMovement();
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.None;
-        }
+        HandleMouse();
+        HandleMovement();
     }
 
     private void HandleMouse()
@@ -100,9 +94,9 @@ public class PlayerController : MonoBehaviour
         playerInputActions.Player.Sprint.canceled += OnSprintStop;
         playerInputActions.Player.Pause.performed += OnPauseButtonPress;
 
-        #if UNITY_EDITOR
-            playerInputActions.Player.Pause.ApplyBindingOverride("<Keyboard>/tab", path: "<Keyboard>/escape");
-        #endif
+#if UNITY_EDITOR
+        playerInputActions.Player.Pause.ApplyBindingOverride("<Keyboard>/tab", path: "<Keyboard>/escape");
+#endif
 
         playerInputActions.Player.Enable();
     }
@@ -140,7 +134,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnPauseButtonPress(InputAction.CallbackContext context)
     {
-        pauseChannel.RaiseEvent();
+        isPaused = !isPaused;
+        pauseChannel.RaiseEvent(isPaused);
     }
 }
 

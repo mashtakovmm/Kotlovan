@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 932239943704002198}
-  - component: {fileID: 6186219413519306619}
+  - component: {fileID: 513218868394786737}
   m_Layer: 0
   m_Name: GameStateManager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6186219413519306619
+--- !u!114 &513218868394786737
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,5 +44,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6c093f3b13ec7d40a1e5d729865f4ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseChannel: {fileID: 11400000, guid: 1ed7a0404eb9de4428f27cb50ea685b7, type: 2}
-  togglePauseMenuChannel: {fileID: 11400000, guid: 465b21533eade5943b5a37832801179f, type: 2}

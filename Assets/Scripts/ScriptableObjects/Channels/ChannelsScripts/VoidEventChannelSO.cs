@@ -6,8 +6,8 @@ public class VoidEventChannelSO : ScriptableObject
 {
     public UnityAction OnVoidEventRequested;
 
-    public void RaiseEvent() {
-        Debug.Log("event raised");
+    public void RaiseEvent()
+    {
         OnVoidEventRequested?.Invoke();
     }
 }

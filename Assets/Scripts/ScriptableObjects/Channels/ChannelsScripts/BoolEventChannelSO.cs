@@ -7,7 +7,6 @@ public class BoolEventChannelSO : ScriptableObject
     public UnityAction<bool> OnBoolEventRequested;
 
     public void RaiseEvent(bool value) {
-        Debug.Log("event raised");
         OnBoolEventRequested?.Invoke(value);
     }
 }

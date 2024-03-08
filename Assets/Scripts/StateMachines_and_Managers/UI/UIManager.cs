@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using OpenCover.Framework.Model;
 using UnityEngine;
 
 
@@ -10,5 +7,25 @@ using UnityEngine;
 /// </summary>
 public class UIManager : MonoBehaviour
 {
+    [Header("Channels")]
+    [Header("Listening to:")]
+    [SerializeField] private BoolEventChannelSO pauseChannel;
     
+    [Header("UI Components")]
+    [SerializeField] private GameObject pauseMenu;
+
+    private void OnEnable()
+    {
+        pauseChannel.OnBoolEventRequested += HandlePause;
+    }
+
+    private void OnDisable()
+    {
+        pauseChannel.OnBoolEventRequested -= HandlePause;
+    }
+
+    private void HandlePause(bool isPaused)
+    {
+        pauseMenu.SetActive(isPaused);
+    }
 }

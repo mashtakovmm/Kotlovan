@@ -23,6 +23,7 @@ public class DialogueStarter : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, raycastDistance))
         {
+            // TODO: handle color change inside interractable gameObject
             hitObject = hit.collider.gameObject;
             if (prevHitObject != hitObject)
             {

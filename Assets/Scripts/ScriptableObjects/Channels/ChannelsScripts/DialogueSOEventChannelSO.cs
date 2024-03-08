@@ -7,7 +7,6 @@ public class DialogueSOEventChannelSO : ScriptableObject
     public UnityAction<DialogueSO> OnDialogueSOEventRequested;
 
     public void RaiseEvent(DialogueSO dialogue) {
-        Debug.Log("event raised");
         OnDialogueSOEventRequested?.Invoke(dialogue);
     }
 }
