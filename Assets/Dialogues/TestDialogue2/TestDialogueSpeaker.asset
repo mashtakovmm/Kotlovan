@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c33e77ebc680344ba114a9f3bf864cc, type: 3}
   m_Name: TestDialogueSpeaker
   m_EditorClassIdentifier: 
-  _speakerName: TestTest
+  _speakerName: TestTest2
   _color: {r: 0.8773585, g: 0.23589355, b: 0.23589355, a: 1}

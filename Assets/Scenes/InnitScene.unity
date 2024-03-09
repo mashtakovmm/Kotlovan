@@ -335,6 +335,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 469434421}
   m_CullTransparentMesh: 1
+--- !u!1 &1124667459 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8571699379197543163, guid: 3bc8c309c09a22d40bea9d4ce2717f23, type: 3}
+  m_PrefabInstance: {fileID: 4239253256156631124}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1141309684 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2394602336248027071, guid: 3bc8c309c09a22d40bea9d4ce2717f23, type: 3}
@@ -448,7 +453,7 @@ PrefabInstance:
     - target: {fileID: 6551532024081439141, guid: 9995a423fbc31604cae576f724e7c279, type: 3}
       propertyPath: dialogueStartChannel
       value: 
-      objectReference: {fileID: 11400000, guid: 57b4963c67c3c104aa53dcbacf7977bd, type: 2}
+      objectReference: {fileID: 11400000, guid: c116e148a6c36824d936c1d165b5043d, type: 2}
     - target: {fileID: 6551532024081439141, guid: 9995a423fbc31604cae576f724e7c279, type: 3}
       propertyPath: simpleNodeDataChanne
       value: 
@@ -456,7 +461,7 @@ PrefabInstance:
     - target: {fileID: 6551532024081439141, guid: 9995a423fbc31604cae576f724e7c279, type: 3}
       propertyPath: choiceNodeDataChannel
       value: 
-      objectReference: {fileID: 11400000, guid: afcf02df0336c8b44821bb268706b45b, type: 2}
+      objectReference: {fileID: 11400000, guid: 1292766a4649d5b49bc31dbd693539c2, type: 2}
     - target: {fileID: 6551532024081439141, guid: 9995a423fbc31604cae576f724e7c279, type: 3}
       propertyPath: simpleNodeDataChannel
       value: 
@@ -541,6 +546,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3424448917142859884, guid: 3bc8c309c09a22d40bea9d4ce2717f23, type: 3}
+      propertyPath: dialogueActivatedChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: c116e148a6c36824d936c1d165b5043d, type: 2}
     - target: {fileID: 3523892951788522784, guid: 3bc8c309c09a22d40bea9d4ce2717f23, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -678,13 +687,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1854230031}
     - target: {fileID: 7195559216681840455, guid: 3bc8c309c09a22d40bea9d4ce2717f23, type: 3}
+      propertyPath: optionsContainer
+      value: 
+      objectReference: {fileID: 1124667459}
+    - target: {fileID: 7195559216681840455, guid: 3bc8c309c09a22d40bea9d4ce2717f23, type: 3}
+      propertyPath: optionButtonPrefab
+      value: 
+      objectReference: {fileID: 6036159829980153861, guid: eb6314cec29403446a4bfdfa8798f875, type: 3}
+    - target: {fileID: 7195559216681840455, guid: 3bc8c309c09a22d40bea9d4ce2717f23, type: 3}
       propertyPath: simpleNodeDataChanne
       value: 
       objectReference: {fileID: 11400000, guid: cc4cc5fda089425428f023cbf6d1f4d3, type: 2}
     - target: {fileID: 7195559216681840455, guid: 3bc8c309c09a22d40bea9d4ce2717f23, type: 3}
       propertyPath: choiceNodeDataChannel
       value: 
-      objectReference: {fileID: 11400000, guid: afcf02df0336c8b44821bb268706b45b, type: 2}
+      objectReference: {fileID: 11400000, guid: 1292766a4649d5b49bc31dbd693539c2, type: 2}
     - target: {fileID: 7195559216681840455, guid: 3bc8c309c09a22d40bea9d4ce2717f23, type: 3}
       propertyPath: simpleNodeDataChannel
       value: 

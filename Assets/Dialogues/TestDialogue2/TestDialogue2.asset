@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec2dfcb399b340c4795e9e06a0b7eebe, type: 3}
   m_Name: TestDialogue2
   m_EditorClassIdentifier: 
-  _startNode: {fileID: 11400000, guid: 7ef4f5b5a4bd2de4baa03ac670398041, type: 2}
+  _startNode: {fileID: 11400000, guid: d13b0fe4f47a48442b57eefd5e088552, type: 2}
