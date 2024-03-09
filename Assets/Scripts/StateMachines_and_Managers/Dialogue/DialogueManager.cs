@@ -6,8 +6,12 @@ public class DialogueManager : MonoBehaviour, IDialogueNodeVisitor
     [SerializeField] private DialogueSOEventChannelSO dialogueStartChannel;
     [Header("Broadcasting to:")]
     [SerializeField] private VoidEventChannelSO dialogueEndChannel;
+    // [SerializeField] private SimpleNodeSOEventChannelSO simpleNodeDataChannel;
+    // [SerializeField] private ChoiceNodeSOEventChannelSO choiceNodeDataChannel;
+    [SerializeField] SimpleNodeDataChannelSO simpleNodeDataChannel;
     private DialogueSO currentDialogue;
     private BaseNodeSO currentNode;
+    private BaseNodeSO nextNode;
 
 
     private void OnEnable()
@@ -24,6 +28,12 @@ public class DialogueManager : MonoBehaviour, IDialogueNodeVisitor
     {
         currentDialogue = dialogue;
         currentNode = dialogue.StartNode;
+        currentNode.Accept(this);
+    }
+
+    private void NextNode(BaseNodeSO node)
+    {
+
     }
 
     private void EndDialogue()
@@ -31,12 +41,18 @@ public class DialogueManager : MonoBehaviour, IDialogueNodeVisitor
         dialogueEndChannel.OnVoidEventRequested();
     }
 
+    private void HandleClick()
+    {
+        currentNode.Accept(this);
+    }
+
     public void Visit(SimpleNodeSO node)
     {
-        Debug.Log(node.NextNode.Line.Text); // test
+        simpleNodeDataChannel.OnSimpleNodeDataRequested(node.Line, node.Speaker);
     }
     public void Visit(ChocesNodeSO node)
     {
-        Debug.Log(node.Options[0].NextNode.Line.Text); // test
+
+        // Debug.Log(node.Options[0].NextNode.Line.Text); // test
     }
 }
