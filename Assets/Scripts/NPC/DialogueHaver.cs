@@ -10,8 +10,28 @@ public class DialogueHaver : MonoBehaviour
     [Header("Objects")]
     [SerializeField] private DialogueSO _dialogue;
 
-    public void HandleDialogueRequest() {
+    private Color defaultColor;
+    private Color highlightColor = Color.cyan;
+    private Renderer r;
+
+    private void Start()
+    {
+        r = GetComponent<Renderer>();
+        defaultColor = r.material.GetColor("_Color");
+    }
+    public void HandleDialogueRequest()
+    {
         Debug.Log("Starting Dialogue from NPC");
         dialogueStartChannel.OnDialogueSOEventRequested(_dialogue);
+    }
+
+    public void Hightlight()
+    {
+        r.material.SetColor("_Color", highlightColor);
+    }
+
+    public void StopHighlight()
+    {  
+        r.material.SetColor("_Color", defaultColor);
     }
 }

@@ -23,25 +23,27 @@ public class DialogueStarter : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, raycastDistance))
         {
-            // TODO: handle color change inside interractable gameObject
             hitObject = hit.collider.gameObject;
+            DialogueHaver dialogueHaver = hitObject.GetComponent<DialogueHaver>();
+
+            if (dialogueHaver) { dialogueHaver.Hightlight(); }
+
             if (prevHitObject != hitObject)
             {
-                if (prevHitObject != null)
+                if (prevHitObject && prevHitObject.GetComponent<DialogueHaver>())
                 {
-                    prevHitObject.GetComponent<Renderer>().material.SetColor("_Color", defaultColor); 
-                }
-                defaultColor = hitObject.GetComponent<Renderer>().material.GetColor("_Color");
-                prevHitObject = hitObject;
-                if (hitObject.GetComponent<DialogueHaver>())
-                {
-                    hitObject.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+                    prevHitObject.GetComponent<DialogueHaver>().StopHighlight();
                 }
             }
+
+            prevHitObject = hitObject;
         }
         else if (prevHitObject)
         {
-            prevHitObject.GetComponent<Renderer>().material.SetColor("_Color", defaultColor); 
+            if (prevHitObject && prevHitObject.GetComponent<DialogueHaver>())
+            {
+                prevHitObject.GetComponent<DialogueHaver>().StopHighlight();
+            }
             prevHitObject = null;
         }
     }
