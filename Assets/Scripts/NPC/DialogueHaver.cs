@@ -21,7 +21,6 @@ public class DialogueHaver : MonoBehaviour
     }
     public void HandleDialogueRequest()
     {
-        Debug.Log("Starting Dialogue from NPC");
         dialogueStartChannel.OnDialogueSOEventRequested(_dialogue);
     }
 

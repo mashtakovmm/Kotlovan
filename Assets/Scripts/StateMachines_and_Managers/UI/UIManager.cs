@@ -12,6 +12,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private DialogueSOEventChannelSO dialogueStartChannel;
     [SerializeField] private VoidEventChannelSO dialogueEndChannel;
 
+    [Header("Broadcasting to:")]
+    [SerializeField] private DialogueSOEventChannelSO dialogueActivatedChannel;
+
+
     [Header("UI Components")]
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject dialogueUI;
@@ -20,12 +24,14 @@ public class UIManager : MonoBehaviour
     {
         pauseChannel.OnBoolEventRequested += HandlePause;
         dialogueStartChannel.OnDialogueSOEventRequested += OnDialogueStart;
+        dialogueEndChannel.OnVoidEventRequested += OnDialogueEnd;
     }
 
     private void OnDisable()
     {
         pauseChannel.OnBoolEventRequested -= HandlePause;
         dialogueStartChannel.OnDialogueSOEventRequested -= OnDialogueStart;
+        dialogueEndChannel.OnVoidEventRequested -= OnDialogueEnd;
     }
 
     private void HandlePause(bool isPaused)
@@ -39,6 +45,10 @@ public class UIManager : MonoBehaviour
     {
         dialogueUI.SetActive(true);
         Cursor.lockState = CursorLockMode.Confined;
+
+        dialogueActivatedChannel.OnDialogueSOEventRequested(dialogue);
+
+
     }
 
     private void OnDialogueEnd()
