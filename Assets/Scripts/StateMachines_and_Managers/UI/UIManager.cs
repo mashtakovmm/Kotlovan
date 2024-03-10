@@ -15,7 +15,6 @@ public class UIManager : MonoBehaviour
     [Header("Broadcasting to:")]
     [SerializeField] private DialogueSOEventChannelSO dialogueActivatedChannel;
 
-
     [Header("UI Components")]
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject dialogueUI;
