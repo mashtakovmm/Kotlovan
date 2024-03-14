@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     private PlayerInputActions playerInputActions;
+    private InputReader inputReader;
     private InputAction movement;
     private CharacterController characterController;
     private Camera playerCam;
@@ -32,13 +33,17 @@ public class PlayerController : MonoBehaviour
     private bool isSprinting;
 
     private bool isPaused = false;
-
     private void Awake()
     {
-        playerInputActions = new PlayerInputActions();
         characterController = GetComponent<CharacterController>();
         playerCam = GetComponentInChildren<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
+
+        // creates reader in current scene unless it already exists
+        var inputReaderInnit = InputReader.Instance.playerInputActions;
+        inputReader = FindObjectOfType<InputReader>();
+        playerInputActions = inputReader.playerInputActions;
+
     }
 
     private void Update()

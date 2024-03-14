@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class DialogueStarter : MonoBehaviour
 {
     private PlayerInputActions playerInputActions;
+    private InputReader inputReader;
     private Camera playerCamera;
     [SerializeField] private float raycastDistance = 3f;
     private GameObject hitObject;
@@ -12,7 +13,10 @@ public class DialogueStarter : MonoBehaviour
 
     private void Awake()
     {
-        playerInputActions = new PlayerInputActions();
+        // creates reader in current scene unless it already exists
+        var inputReaderInnit = InputReader.Instance.playerInputActions;
+        inputReader = FindObjectOfType<InputReader>();
+        playerInputActions = inputReader.playerInputActions;
         playerCamera = GetComponentInChildren<Camera>();
     }
 
