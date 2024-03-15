@@ -675,6 +675,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerStateManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7067571108527487755, guid: 993041b813db71f44a645453b3001fb0, type: 3}
+      propertyPath: actionMapChangeChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 440d07fde383d3c4fba400b6bedd95c5, type: 2}
     - target: {fileID: 8364854935281303580, guid: 993041b813db71f44a645453b3001fb0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

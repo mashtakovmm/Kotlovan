@@ -11,11 +11,13 @@ public class PlayerStateManager : MonoBehaviour
 
     [Header("Listening to:")]
     [SerializeField] private DialogueSOEventChannelSO dialogueStartChannel;
+    [Header(" ")]
+    [SerializeField] private ActionMapChangeChannelSO actionMapChangeChannel;
 
     void Start()
     {
         currentState = FreeroamState;
-        currentState.EnterState(this);
+        currentState.EnterState(this, actionMapChangeChannel);
     }
 
     void Update()
@@ -36,6 +38,6 @@ public class PlayerStateManager : MonoBehaviour
     private void HandleDialogueStart(DialogueSO _)
     {
         currentState = DialogueState;
-        currentState.EnterState(this);
+        currentState.EnterState(this, actionMapChangeChannel);
     }
 }

@@ -37,10 +37,7 @@ public class PlayerController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         playerCam = GetComponentInChildren<Camera>();
-        Cursor.lockState = CursorLockMode.Locked;
 
-        // creates reader in current scene unless it already exists
-        var inputReaderInnit = InputReader.Instance.playerInputActions;
         inputReader = FindObjectOfType<InputReader>();
         playerInputActions = inputReader.playerInputActions;
 
@@ -48,8 +45,13 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        HandleMouse();
         HandleMovement();
+
+        if (playerInputActions.Player.enabled)
+        {
+            HandleMouse();
+        }
+
     }
 
     private void HandleMouse()
