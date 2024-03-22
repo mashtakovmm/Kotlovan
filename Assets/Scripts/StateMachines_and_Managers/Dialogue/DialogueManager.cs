@@ -1,37 +1,30 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class DialogueManager : MonoBehaviour, IDialogueNodeVisitor
 {
+    [SerializeField] InputReader inputReader;
     [Header("Listening to:")]
     [SerializeField] private DialogueSOEventChannelSO dialogueStartChannel;
     [SerializeField] BaseNodeSOChannel nextNodeCallbackChannel;
     [Header("Broadcasting to:")]
     [SerializeField] private VoidEventChannelSO dialogueEndChannel;
-    // [SerializeField] private SimpleNodeSOEventChannelSO simpleNodeDataChannel;
-    // [SerializeField] private ChoiceNodeSOEventChannelSO choiceNodeDataChannel;
     [SerializeField] SimpleNodeDataChannelSO simpleNodeDataChannel;
     [SerializeField] ChoiceNodeDataChannelSO choiceNodeDataChannel;
     private DialogueSO currentDialogue;
     private BaseNodeSO currentNode;
     private BaseNodeSO nextNode;
-    private PlayerInputActions playerInputActions;
+    private bool isPrevNodeChoice;
 
-    private void Awake()
-    {
-        playerInputActions = new PlayerInputActions();
-    }
     private void OnEnable()
     {
-        playerInputActions.Dialogue.MouseClick.performed += HandleClick;
+        inputReader.MouseClickEvent += HandleClick;
         dialogueStartChannel.OnDialogueSOEventRequested += StartDialogue;
         nextNodeCallbackChannel.OnBaseNodeSOEventRequested += HandleNextNodeCallback;
     }
 
     private void OnDisable()
     {
-        playerInputActions.Dialogue.MouseClick.Disable();
-        playerInputActions.Dialogue.MouseClick.performed -= HandleClick;
+        inputReader.MouseClickEvent -= HandleClick;
         dialogueStartChannel.OnDialogueSOEventRequested -= StartDialogue;
         nextNodeCallbackChannel.OnBaseNodeSOEventRequested -= HandleNextNodeCallback;
     }
@@ -62,9 +55,9 @@ public class DialogueManager : MonoBehaviour, IDialogueNodeVisitor
         dialogueEndChannel.OnVoidEventRequested();
     }
 
-    private void HandleClick(InputAction.CallbackContext context)
+    private void HandleClick()
     {
-        NextNode(nextNode);
+        if (!isPrevNodeChoice) { NextNode(nextNode); }
     }
 
     private void HandleNextNodeCallback(BaseNodeSO node)
@@ -75,14 +68,14 @@ public class DialogueManager : MonoBehaviour, IDialogueNodeVisitor
 
     public void Visit(SimpleNodeSO node)
     {
+        isPrevNodeChoice = false;
         simpleNodeDataChannel.OnSimpleNodeDataRequested(node.Line, node.Speaker);
         Debug.Log("Data sent");
-        playerInputActions.Dialogue.MouseClick.Enable();
         nextNode = node.NextNode;
     }
     public void Visit(ChocesNodeSO node)
     {
-        playerInputActions.Dialogue.MouseClick.Disable();
+        isPrevNodeChoice = true;
         choiceNodeDataChannel.OnChoiceNodeDataRequested(node.Line, node.Speaker, node.Options);
     }
 }

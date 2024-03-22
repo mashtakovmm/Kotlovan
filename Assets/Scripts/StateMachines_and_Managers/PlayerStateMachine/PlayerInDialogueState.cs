@@ -3,10 +3,9 @@ using UnityEngine;
 
 public class PlayerInDialogueState : PlayerBaseState
 {
-    public override void EnterState(PlayerStateManager player, ActionMapChangeChannelSO actionMapChangeChannel)
+    public override void EnterState(PlayerStateManager player)
     {
-        Debug.Log($"Enter dialogue state, set map channel: {actionMapChangeChannel}");
-        actionMapChangeChannel.OnDialogueMap();
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     public override void UpdateState(PlayerStateManager player)

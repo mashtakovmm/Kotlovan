@@ -6,9 +6,10 @@ using UnityEngine;
 /// </summary>
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private InputReader inputReader;
     [Header("Channels")]
     [Header("Listening to:")]
-    [SerializeField] private BoolEventChannelSO pauseChannel;
+    [SerializeField] private VoidEventChannelSO pauseChannel;
     [SerializeField] private DialogueSOEventChannelSO dialogueStartChannel;
     [SerializeField] private VoidEventChannelSO dialogueEndChannel;
 
@@ -21,23 +22,32 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        pauseChannel.OnBoolEventRequested += HandlePause;
+        pauseChannel.OnVoidEventRequested += HandlePause;
         dialogueStartChannel.OnDialogueSOEventRequested += OnDialogueStart;
         dialogueEndChannel.OnVoidEventRequested += OnDialogueEnd;
+
+        inputReader.UnpauseEvent += HandleUnpause;
     }
 
     private void OnDisable()
     {
-        pauseChannel.OnBoolEventRequested -= HandlePause;
+        pauseChannel.OnVoidEventRequested -= HandlePause;
         dialogueStartChannel.OnDialogueSOEventRequested -= OnDialogueStart;
         dialogueEndChannel.OnVoidEventRequested -= OnDialogueEnd;
+
+        inputReader.UnpauseEvent -= HandleUnpause;
     }
 
-    private void HandlePause(bool isPaused)
+    private void HandlePause()
     {
-        pauseMenu.SetActive(isPaused);
-        if (isPaused) { Cursor.lockState = CursorLockMode.Confined; }
-        else { Cursor.lockState = CursorLockMode.Locked; }
+        pauseMenu.SetActive(true);
+        Cursor.lockState = CursorLockMode.Confined;
+    }
+
+    private void HandleUnpause()
+    {
+        pauseMenu.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void OnDialogueStart(DialogueSO dialogue)

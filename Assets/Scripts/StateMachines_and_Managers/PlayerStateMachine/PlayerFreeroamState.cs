@@ -3,10 +3,9 @@ using UnityEngine;
 
 public class PlayerFreeroamState : PlayerBaseState
 {
-    public override void EnterState(PlayerStateManager player, ActionMapChangeChannelSO actionMapChangeChannel)
+    public override void EnterState(PlayerStateManager player)
     {
-        Debug.Log($"Enter freeroam state, set map channel: {actionMapChangeChannel}");
-        actionMapChangeChannel.OnPlayerMap();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public override void UpdateState(PlayerStateManager player)

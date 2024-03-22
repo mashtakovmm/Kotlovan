@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameStateManager : MonoBehaviour
@@ -5,7 +6,8 @@ public class GameStateManager : MonoBehaviour
 
     [Header("Channels")]
     [Header("Listening to:")]
-    [SerializeField] private BoolEventChannelSO pauseChannel;
+    [SerializeField] private VoidEventChannelSO pauseChannel;
+    [SerializeField] private VoidEventChannelSO unpauseChannel;
     private GameBaseState currentState;
     public GamePausedState PausedState = new GamePausedState();
     public GamePlayedState PlayedState = new GamePlayedState();
@@ -24,12 +26,12 @@ public class GameStateManager : MonoBehaviour
 
     private void OnEnable()
     {
-        pauseChannel.OnBoolEventRequested += HandlePauseButton;
+     //   pauseChannel.OnBoolEventRequested += HandlePauseButton;
     }
 
     private void OnDisable()
     {
-        pauseChannel.OnBoolEventRequested -= HandlePauseButton;
+     //   pauseChannel.OnBoolEventRequested -= HandlePauseButton;
     }
 
     private void HandlePauseButton(bool isPaused)

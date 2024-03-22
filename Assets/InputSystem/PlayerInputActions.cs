@@ -71,6 +71,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""504eea97-7b7e-4f8f-87a9-729a1ac004a3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -172,17 +181,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3dc32a23-6909-4fe2-b749-7766c3cfb388"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
         {
-            ""name"": ""Dialogue"",
-            ""id"": ""83aadf6b-685c-472b-abf3-ab5e5fd73465"",
+            ""name"": ""UI"",
+            ""id"": ""1351a402-8d60-4d2a-9774-10abf63f5dd2"",
             ""actions"": [
                 {
-                    ""name"": ""MouseClick"",
+                    ""name"": ""Unpause"",
                     ""type"": ""Button"",
-                    ""id"": ""f240af47-5355-4552-97a3-fb41a6bf36d2"",
+                    ""id"": ""45249c65-11eb-47e0-9da6-5e3e2210a84b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -192,12 +212,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""6fee6a20-17c1-4a92-93dd-5f68959b5a21"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""id"": ""f55017f0-f85c-49e0-91ec-30665e689c19"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MouseClick"",
+                    ""action"": ""Unpause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -274,9 +294,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
-        // Dialogue
-        m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
-        m_Dialogue_MouseClick = m_Dialogue.FindAction("MouseClick", throwIfNotFound: true);
+        m_Player_MouseClick = m_Player.FindAction("MouseClick", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_Unpause = m_UI.FindAction("Unpause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -343,6 +364,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_MouseClick;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -352,6 +374,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @MouseClick => m_Wrapper.m_Player_MouseClick;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -376,6 +399,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @MouseClick.started += instance.OnMouseClick;
+            @MouseClick.performed += instance.OnMouseClick;
+            @MouseClick.canceled += instance.OnMouseClick;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -395,6 +421,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @MouseClick.started -= instance.OnMouseClick;
+            @MouseClick.performed -= instance.OnMouseClick;
+            @MouseClick.canceled -= instance.OnMouseClick;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -413,51 +442,51 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     }
     public PlayerActions @Player => new PlayerActions(this);
 
-    // Dialogue
-    private readonly InputActionMap m_Dialogue;
-    private List<IDialogueActions> m_DialogueActionsCallbackInterfaces = new List<IDialogueActions>();
-    private readonly InputAction m_Dialogue_MouseClick;
-    public struct DialogueActions
+    // UI
+    private readonly InputActionMap m_UI;
+    private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
+    private readonly InputAction m_UI_Unpause;
+    public struct UIActions
     {
         private @PlayerInputActions m_Wrapper;
-        public DialogueActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MouseClick => m_Wrapper.m_Dialogue_MouseClick;
-        public InputActionMap Get() { return m_Wrapper.m_Dialogue; }
+        public UIActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Unpause => m_Wrapper.m_UI_Unpause;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(DialogueActions set) { return set.Get(); }
-        public void AddCallbacks(IDialogueActions instance)
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void AddCallbacks(IUIActions instance)
         {
-            if (instance == null || m_Wrapper.m_DialogueActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_DialogueActionsCallbackInterfaces.Add(instance);
-            @MouseClick.started += instance.OnMouseClick;
-            @MouseClick.performed += instance.OnMouseClick;
-            @MouseClick.canceled += instance.OnMouseClick;
+            if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
+            @Unpause.started += instance.OnUnpause;
+            @Unpause.performed += instance.OnUnpause;
+            @Unpause.canceled += instance.OnUnpause;
         }
 
-        private void UnregisterCallbacks(IDialogueActions instance)
+        private void UnregisterCallbacks(IUIActions instance)
         {
-            @MouseClick.started -= instance.OnMouseClick;
-            @MouseClick.performed -= instance.OnMouseClick;
-            @MouseClick.canceled -= instance.OnMouseClick;
+            @Unpause.started -= instance.OnUnpause;
+            @Unpause.performed -= instance.OnUnpause;
+            @Unpause.canceled -= instance.OnUnpause;
         }
 
-        public void RemoveCallbacks(IDialogueActions instance)
+        public void RemoveCallbacks(IUIActions instance)
         {
-            if (m_Wrapper.m_DialogueActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IDialogueActions instance)
+        public void SetCallbacks(IUIActions instance)
         {
-            foreach (var item in m_Wrapper.m_DialogueActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_DialogueActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public DialogueActions @Dialogue => new DialogueActions(this);
+    public UIActions @UI => new UIActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -510,9 +539,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
-    }
-    public interface IDialogueActions
-    {
         void OnMouseClick(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+        void OnUnpause(InputAction.CallbackContext context);
     }
 }

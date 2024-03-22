@@ -5,8 +5,6 @@ using UnityEngine.UI;
 public class DialogueUIManager : MonoBehaviour
 {
     [Header("Listening to:")]
-    // [SerializeField] private SimpleNodeSOEventChannelSO simpleNodeDataChannel;
-    // [SerializeField] private ChoiceNodeSOEventChannelSO choiceNodeDataChannel;
     [SerializeField] SimpleNodeDataChannelSO simpleNodeDataChannel;
     [SerializeField] ChoiceNodeDataChannelSO choiceNodeDataChannel;
     [Header("Broadcasting to:")]
@@ -57,9 +55,9 @@ public class DialogueUIManager : MonoBehaviour
         dialogueTextUI.GetComponent<TMP_Text>().text = lineText;
         dialogueTextUI.GetComponent<TMP_Text>().color = lineColor;
 
-
         // TODO: change the logic. I dont like handling the node in this component, all node logic should be handeled in DialogueManager.
         // Leave it for now as is
+        Debug.Log("Add buttons");
         foreach (OptionsSO option in options)
         {
             GameObject newButton = Instantiate(optionButtonPrefab, optionsContainer.transform);
@@ -73,10 +71,14 @@ public class DialogueUIManager : MonoBehaviour
     private void HandleOnClick(BaseNodeSO nextNode)
     {
         nextNodeCallbackChannel.OnBaseNodeSOEventRequested(nextNode);
+        ClearOptions();
+    }
 
-        // clear container
+    private void ClearOptions()
+    {
         foreach (Transform child in optionsContainer.transform)
         {
+            Debug.Log("clear button");
             Destroy(child.gameObject);
         }
     }

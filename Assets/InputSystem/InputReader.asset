@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b87846236243c84a853f826a5919f80, type: 3}
-  m_Name: ActionMapChange_Channel
+  m_Script: {fileID: 11500000, guid: bd6b45e3df913b447ad376a2c6ab5cb8, type: 3}
+  m_Name: InputReader
   m_EditorClassIdentifier: 

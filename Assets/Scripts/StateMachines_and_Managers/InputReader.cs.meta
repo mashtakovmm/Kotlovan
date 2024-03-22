@@ -1,11 +1,9 @@
 fileFormatVersion: 2
-guid: ec732385d38067b489e4bbb20f93c352
+guid: bd6b45e3df913b447ad376a2c6ab5cb8
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - actionMapChangeChannel: {fileID: 11400000, guid: 440d07fde383d3c4fba400b6bedd95c5, type: 2}
-  - prefab: {fileID: 8310103441917322969, guid: 162308f1ea88da2459faa0fe108582a5, type: 3}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

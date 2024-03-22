@@ -1,3 +1,5 @@
+using System;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,14 +7,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private PlayerInputActions playerInputActions;
-    private InputReader inputReader;
-    private InputAction movement;
+    [SerializeField] private InputReader inputReader;
     private CharacterController characterController;
     private Camera playerCam;
 
     [Header("Broadcasting to:")]
-    [SerializeField] private BoolEventChannelSO pauseChannel;
+    [SerializeField] private VoidEventChannelSO pauseChannel;
 
     [Header("Controls")]
     [SerializeField] private float normalSpeed = 2.0f;
@@ -31,15 +31,11 @@ public class PlayerController : MonoBehaviour
 
     private float speed;
     private bool isSprinting;
-
-    private bool isPaused = false;
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
         playerCam = GetComponentInChildren<Camera>();
 
-        inputReader = FindObjectOfType<InputReader>();
-        playerInputActions = inputReader.playerInputActions;
 
     }
 
@@ -47,10 +43,8 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
 
-        if (playerInputActions.Player.enabled)
-        {
-            HandleMouse();
-        }
+        HandleMouse();
+
 
     }
 
@@ -68,7 +62,6 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement()
     {
-        movementInput = movement.ReadValue<Vector2>();
         move = transform.right * movementInput.x + transform.forward * movementInput.y;
 
         // Gravity stuff
@@ -94,31 +87,30 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        movement = playerInputActions.Player.Move;
+        inputReader.MoveEvent += OnMove;
 
-        playerInputActions.Player.Jump.performed += OnJump;
-        playerInputActions.Player.Sprint.performed += OnSprint;
-        playerInputActions.Player.Sprint.canceled += OnSprintStop;
-        playerInputActions.Player.Pause.performed += OnPauseButtonPress;
+        inputReader.JumpEvent += OnJump;
+        inputReader.SprintStartEvent += OnSprint;
+        inputReader.SprintEndEvent += OnSprintStop;
+        inputReader.PasueEvent += OnPauseButtonPress;
 
-#if UNITY_EDITOR
-        playerInputActions.Player.Pause.ApplyBindingOverride("<Keyboard>/tab", path: "<Keyboard>/escape");
-#endif
-
-        playerInputActions.Player.Enable();
     }
 
     private void OnDisable()
     {
-        playerInputActions.Player.Jump.performed -= OnJump;
-        playerInputActions.Player.Sprint.performed -= OnSprint;
-        playerInputActions.Player.Sprint.canceled -= OnSprintStop;
-        playerInputActions.Player.Pause.performed -= OnPauseButtonPress;
-
-        playerInputActions.Player.Disable();
+        inputReader.MoveEvent -= OnMove;
+        inputReader.JumpEvent -= OnJump;
+        inputReader.SprintStartEvent -= OnSprint;
+        inputReader.SprintEndEvent -= OnSprintStop;
+        inputReader.PasueEvent -= OnPauseButtonPress;
     }
 
-    private void OnJump(InputAction.CallbackContext context)
+    private void OnMove(Vector2 vector)
+    {
+        movementInput = vector;
+    }
+
+    private void OnJump()
     {
         if (characterController.isGrounded)
         {
@@ -127,22 +119,21 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Jump");
     }
 
-    private void OnSprint(InputAction.CallbackContext context)
+    private void OnSprint()
     {
         isSprinting = true;
         Debug.Log("Starting Sprint");
     }
 
-    private void OnSprintStop(InputAction.CallbackContext context)
+    private void OnSprintStop()
     {
         isSprinting = false;
         Debug.Log("Stopping Sprint");
     }
 
-    private void OnPauseButtonPress(InputAction.CallbackContext context)
+    private void OnPauseButtonPress()
     {
-        isPaused = !isPaused;
-        pauseChannel.RaiseEvent(isPaused);
+        pauseChannel.RaiseEvent();
     }
 }
 

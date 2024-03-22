@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "MouseClick",
+                    "type": "Button",
+                    "id": "504eea97-7b7e-4f8f-87a9-729a1ac004a3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -150,17 +159,28 @@
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3dc32a23-6909-4fe2-b749-7766c3cfb388",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
         {
-            "name": "Dialogue",
-            "id": "83aadf6b-685c-472b-abf3-ab5e5fd73465",
+            "name": "UI",
+            "id": "1351a402-8d60-4d2a-9774-10abf63f5dd2",
             "actions": [
                 {
-                    "name": "MouseClick",
+                    "name": "Unpause",
                     "type": "Button",
-                    "id": "f240af47-5355-4552-97a3-fb41a6bf36d2",
+                    "id": "45249c65-11eb-47e0-9da6-5e3e2210a84b",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -170,12 +190,12 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "6fee6a20-17c1-4a92-93dd-5f68959b5a21",
-                    "path": "<Mouse>/leftButton",
+                    "id": "f55017f0-f85c-49e0-91ec-30665e689c19",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MouseClick",
+                    "action": "Unpause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

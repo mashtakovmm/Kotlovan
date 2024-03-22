@@ -1,66 +1,102 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputReader : MonoBehaviour
+[CreateAssetMenu(menuName = "Input/Input Reader")]
+public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions, PlayerInputActions.IUIActions
 {
-    [SerializeField] private ActionMapChangeChannelSO actionMapChangeChannel;
-    private static InputReader instance;
-    public static InputReader Instance => instance;
+    private PlayerInputActions _inputActions;
 
-    public PlayerInputActions playerInputActions { get; private set; }
-    public InputActionMap currentMap {get; private set; }
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-            playerInputActions = new PlayerInputActions();
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
-
-    }
-
-    private void Start()
-    {
-        EnableMap(playerInputActions.Player);
-        Debug.Log(playerInputActions.Player);
-    }
-
-    private void EnableMap(InputActionMap map)
-    {
-        if (!map.enabled)
-        {
-            currentMap = map;
-            Debug.Log($"Changing map to:{map}");
-            playerInputActions.Disable();
-            map.Enable();
-        }
-    }
+    // events
+    public event Action<Vector2> MoveEvent;
+    public event Action JumpEvent;
+    public event Action PasueEvent;
+    public event Action UnpauseEvent;
+    public event Action SprintStartEvent;
+    public event Action SprintEndEvent;
+    public event Action InteractEvent;
+    public event Action MouseClickEvent;
 
     private void OnEnable()
     {
-        actionMapChangeChannel.OnPlayerMap += HandlePlayerMapCallback;
-        actionMapChangeChannel.OnDialogueMap += HandleDialogueMapCallback;
+        if (_inputActions == null)
+        {
+            _inputActions = new PlayerInputActions();
+            _inputActions.Player.SetCallbacks(this);
+            _inputActions.UI.SetCallbacks(this);
+            SetActiveMap(_inputActions.Player);
+        }
+
+#if UNITY_EDITOR
+        _inputActions.Player.Pause.ApplyBindingOverride("<Keyboard>/tab", path: "<Keyboard>/escape");
+        _inputActions.UI.Unpause.ApplyBindingOverride("<Keyboard>/tab", path: "<Keyboard>/escape");
+#endif
     }
 
-    private void OnDisable()
+    public void OnInteract(InputAction.CallbackContext context)
     {
-        actionMapChangeChannel.OnPlayerMap -= HandlePlayerMapCallback;
-        actionMapChangeChannel.OnDialogueMap -= HandleDialogueMapCallback;
+        if (context.phase == InputActionPhase.Performed)
+        {
+            InteractEvent?.Invoke();
+        }
     }
 
-    private void HandlePlayerMapCallback()
+    public void OnJump(InputAction.CallbackContext context)
     {
-        EnableMap(playerInputActions.Player);
+        if (context.phase == InputActionPhase.Performed)
+        {
+            JumpEvent?.Invoke();
+        }
     }
 
-    private void HandleDialogueMapCallback()
+    public void OnMove(InputAction.CallbackContext context)
     {
-        EnableMap(playerInputActions.Dialogue);
+        MoveEvent?.Invoke(context.ReadValue<Vector2>());
     }
+
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            PasueEvent?.Invoke();
+            SetActiveMap(_inputActions.UI);
+        }
+    }
+
+    public void OnSprint(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            SprintStartEvent?.Invoke();
+        }
+        else if (context.phase == InputActionPhase.Canceled)
+        {
+            SprintEndEvent?.Invoke();
+        }
+    }
+
+    public void OnMouseClick(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            MouseClickEvent?.Invoke();
+        }
+    }
+
+    public void OnUnpause(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            UnpauseEvent?.Invoke();
+            SetActiveMap(_inputActions.Player);
+        }
+    }
+
+    private void SetActiveMap(InputActionMap map)
+    {
+        _inputActions.Disable();
+        map.Enable();
+    }
+
+
 }

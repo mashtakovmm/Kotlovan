@@ -3,20 +3,14 @@ using UnityEngine.InputSystem;
 
 public class DialogueStarter : MonoBehaviour
 {
-    private PlayerInputActions playerInputActions;
-    private InputReader inputReader;
+    [SerializeField] private InputReader inputReader;
     private Camera playerCamera;
     [SerializeField] private float raycastDistance = 3f;
     private GameObject hitObject;
     private GameObject prevHitObject = null;
-    private Color defaultColor;
 
     private void Awake()
     {
-        // creates reader in current scene unless it already exists
-        var inputReaderInnit = InputReader.Instance.playerInputActions;
-        inputReader = FindObjectOfType<InputReader>();
-        playerInputActions = inputReader.playerInputActions;
         playerCamera = GetComponentInChildren<Camera>();
     }
 
@@ -54,17 +48,15 @@ public class DialogueStarter : MonoBehaviour
 
     private void OnEnable()
     {
-        playerInputActions.Player.Interact.Enable();
-        playerInputActions.Player.Interact.performed += HandleInteract;
+        inputReader.InteractEvent += HandleInteract;
     }
 
     private void OnDisable()
     {
-        playerInputActions.Player.Interact.Disable();
-        playerInputActions.Player.Interact.performed -= HandleInteract;
+        inputReader.InteractEvent -= HandleInteract;
     }
 
-    private void HandleInteract(InputAction.CallbackContext context)
+    private void HandleInteract()
     {
         if (hitObject && hitObject.GetComponent<DialogueHaver>())
         {

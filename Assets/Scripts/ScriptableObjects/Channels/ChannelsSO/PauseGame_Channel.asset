@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf44b5e49b0f76e419bfbb710247ff9a, type: 3}
+  m_Script: {fileID: 11500000, guid: efca50d6b2403f840bb6993e416e7689, type: 3}
   m_Name: PauseGame_Channel
   m_EditorClassIdentifier: 
