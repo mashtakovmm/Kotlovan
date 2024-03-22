@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerStateManager : MonoBehaviour
 {
-
-    private PlayerBaseState currentState;
+    private static PlayerStateManager _instance;
+    public static PlayerStateManager Instance => _instance;
+    private PlayerBaseState _currentState;
+    public PlayerBaseState currentState => _currentState;
     public PlayerFreeroamState FreeroamState = new PlayerFreeroamState();
     public PlayerInDialogueState DialogueState = new PlayerInDialogueState();
 
@@ -14,8 +14,17 @@ public class PlayerStateManager : MonoBehaviour
     [SerializeField] private VoidEventChannelSO dialogueEndChannel;
     void Start()
     {
-        currentState = FreeroamState;
-        currentState.EnterState(this);
+        if (_instance == null)
+        {
+            _currentState = FreeroamState;
+            _currentState.EnterState(this);
+            _instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
     }
 
     void Update()
@@ -37,13 +46,13 @@ public class PlayerStateManager : MonoBehaviour
 
     private void HandleDialogueStart(DialogueSO _)
     {
-        currentState = DialogueState;
-        currentState.EnterState(this);
+        _currentState = DialogueState;
+        _currentState.EnterState(this);
     }
 
     private void HandleDialogueEnd()
     {
-        currentState = FreeroamState;
-        currentState.EnterState(this);
+        _currentState = FreeroamState;
+        _currentState.EnterState(this);
     }
 }

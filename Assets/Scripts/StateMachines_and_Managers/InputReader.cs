@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions, PlayerInputActions.IUIActions
 {
     private PlayerInputActions _inputActions;
-
+    private InputActionMap _currentMap;
+    public InputActionMap currentMap => _currentMap;
     // events
     public event Action<Vector2> MoveEvent;
     public event Action JumpEvent;
@@ -31,6 +32,7 @@ public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions, 
         _inputActions.Player.Pause.ApplyBindingOverride("<Keyboard>/tab", path: "<Keyboard>/escape");
         _inputActions.UI.Unpause.ApplyBindingOverride("<Keyboard>/tab", path: "<Keyboard>/escape");
 #endif
+
     }
 
     public void OnInteract(InputAction.CallbackContext context)
@@ -95,6 +97,7 @@ public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions, 
     private void SetActiveMap(InputActionMap map)
     {
         _inputActions.Disable();
+        _currentMap = map;
         map.Enable();
     }
 

@@ -1,5 +1,3 @@
-using System;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -31,25 +29,26 @@ public class PlayerController : MonoBehaviour
 
     private float speed;
     private bool isSprinting;
+    
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
         playerCam = GetComponentInChildren<Camera>();
-
-
+        
     }
 
     private void Update()
     {
-        HandleMovement();
-
-        HandleMouse();
-
-
+        if (PlayerStateManager.Instance.currentState == PlayerStateManager.Instance.FreeroamState)
+        {
+            HandleMovement();
+            HandleMouse();
+        }
     }
 
     private void HandleMouse()
     {
+        // TODO: set delta as input action
         mouseDelta = Mouse.current.delta.ReadValue();
 
         mouseTurn.x += mouseDelta.x * sensitivity * Time.deltaTime;

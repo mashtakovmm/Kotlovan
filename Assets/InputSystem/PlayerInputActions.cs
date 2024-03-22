@@ -75,7 +75,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""MouseClick"",
                     ""type"": ""Button"",
-                    ""id"": ""504eea97-7b7e-4f8f-87a9-729a1ac004a3"",
+                    ""id"": ""01da3916-7f60-440c-aacd-4adaa1965be9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -184,7 +184,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3dc32a23-6909-4fe2-b749-7766c3cfb388"",
+                    ""id"": ""e5abae35-0bc2-4c28-8d94-668c0f2f2fc4"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
