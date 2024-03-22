@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31181ba4f69cb6141b3689fba0fbf711, type: 3}
   m_Name: Option2
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 0}
+  _nextNode: {fileID: 11400000, guid: 1c874d24e2a9c8442a03f8a56ba57734, type: 2}
   _optionText: This option continues dialogue

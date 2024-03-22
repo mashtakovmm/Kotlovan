@@ -1842,6 +1842,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6551532024081439141, guid: 9995a423fbc31604cae576f724e7c279, type: 3}
+      propertyPath: inputReader
+      value: 
+      objectReference: {fileID: 11400000, guid: cfe5742ebb58fe0468b80d543c96aaaa, type: 2}
+    - target: {fileID: 6551532024081439141, guid: 9995a423fbc31604cae576f724e7c279, type: 3}
       propertyPath: dialogueEndChannel
       value: 
       objectReference: {fileID: 11400000, guid: a8c71cc5bb63fed4f825dfea0728ed94, type: 2}
