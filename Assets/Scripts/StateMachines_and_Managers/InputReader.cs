@@ -8,8 +8,10 @@ public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions, 
     private PlayerInputActions _inputActions;
     private InputActionMap _currentMap;
     public InputActionMap currentMap => _currentMap;
+    
     // events
     public event Action<Vector2> MoveEvent;
+    public event Action<Vector2> MouseDeltaEvent;
     public event Action JumpEvent;
     public event Action PasueEvent;
     public event Action UnpauseEvent;
@@ -54,6 +56,11 @@ public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions, 
     public void OnMove(InputAction.CallbackContext context)
     {
         MoveEvent?.Invoke(context.ReadValue<Vector2>());
+    }
+
+    public void OnMouseDelta(InputAction.CallbackContext context)
+    {
+        MouseDeltaEvent?.Invoke(context.ReadValue<Vector2>());
     }
 
     public void OnPause(InputAction.CallbackContext context)

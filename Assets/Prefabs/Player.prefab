@@ -105,8 +105,8 @@ GameObject:
   - component: {fileID: 6924080232301807840}
   - component: {fileID: 6026643137944604574}
   - component: {fileID: 4270812119473866558}
-  - component: {fileID: 8631856478358267363}
   - component: {fileID: 6101663927172161311}
+  - component: {fileID: 5487101099113174392}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -145,7 +145,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8600622348956858227}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -229,36 +229,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8631856478358267363
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8600622348956858227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: f1ef272e2a27ff046b002dbd85f71fd0, type: 3}
-  m_NotificationBehavior: 3
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &6101663927172161311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,9 +241,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5a04cbdd1aa7a44b6574da84c51053, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseChannel: {fileID: 11400000, guid: 1ed7a0404eb9de4428f27cb50ea685b7, type: 2}
+  inputReader: {fileID: 11400000, guid: cfe5742ebb58fe0468b80d543c96aaaa, type: 2}
+  pauseChannel: {fileID: 11400000, guid: c1d431251a2f9864087aa833ad1db351, type: 2}
   normalSpeed: 2
   jumpHeight: 2
   gravityForce: -9.81
   sensitivity: 10
   yRotationLimit: 90
+--- !u!114 &5487101099113174392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8600622348956858227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 326ca64a9892d7349a1484a86b45530e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputReader: {fileID: 11400000, guid: cfe5742ebb58fe0468b80d543c96aaaa, type: 2}
+  raycastDistance: 3

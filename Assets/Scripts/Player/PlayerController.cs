@@ -1,13 +1,11 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Input Reader")]
     [SerializeField] private InputReader inputReader;
-    private CharacterController characterController;
-    private Camera playerCam;
 
     [Header("Broadcasting to:")]
     [SerializeField] private VoidEventChannelSO pauseChannel;
@@ -20,7 +18,11 @@ public class PlayerController : MonoBehaviour
     [Header("Camera rotation")]
     [SerializeField] private float sensitivity = 10f;
     [SerializeField] private float yRotationLimit = 90f;
-    private Vector2 mouseDelta;
+
+    private CharacterController characterController;
+    private Camera playerCam;
+
+    private Vector2 mouseDeltaInput;
     private Vector2 mouseTurn = Vector2.zero;
 
     private Vector3 move;
@@ -29,12 +31,12 @@ public class PlayerController : MonoBehaviour
 
     private float speed;
     private bool isSprinting;
-    
+
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
         playerCam = GetComponentInChildren<Camera>();
-        
+
     }
 
     private void Update()
@@ -48,11 +50,8 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMouse()
     {
-        // TODO: set delta as input action
-        mouseDelta = Mouse.current.delta.ReadValue();
-
-        mouseTurn.x += mouseDelta.x * sensitivity * Time.deltaTime;
-        mouseTurn.y -= mouseDelta.y * sensitivity * Time.deltaTime;
+        mouseTurn.x += mouseDeltaInput.x * sensitivity * Time.deltaTime;
+        mouseTurn.y -= mouseDeltaInput.y * sensitivity * Time.deltaTime;
         mouseTurn.y = Mathf.Clamp(mouseTurn.y, -yRotationLimit, yRotationLimit);
 
         playerCam.transform.localRotation = Quaternion.Euler(mouseTurn.y, 0f, 0f);
@@ -87,6 +86,7 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         inputReader.MoveEvent += OnMove;
+        inputReader.MouseDeltaEvent += OnTurn;
 
         inputReader.JumpEvent += OnJump;
         inputReader.SprintStartEvent += OnSprint;
@@ -107,6 +107,11 @@ public class PlayerController : MonoBehaviour
     private void OnMove(Vector2 vector)
     {
         movementInput = vector;
+    }
+
+    private void OnTurn(Vector2 vector)
+    {
+        mouseDeltaInput = vector;
     }
 
     private void OnJump()

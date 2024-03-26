@@ -1,13 +1,14 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class DialogueStarter : MonoBehaviour
 {
+    [Header("Input Reader")]
     [SerializeField] private InputReader inputReader;
-    private Camera playerCamera;
     [SerializeField] private float raycastDistance = 3f;
+
     private GameObject hitObject;
     private GameObject prevHitObject = null;
+    private Camera playerCamera;
 
     private void Awake()
     {
